@@ -35,7 +35,7 @@ const landing = `<!doctype html>
     <p>选择公开版或私人版。两个版本都可以安装到安卓桌面，并共享本地 Qwen 模型缓存。</p>
     <div class="cards">
       <a href="./public/"><strong>公开版</strong>无需密码，包含提炼后的阅读、写作方法摘要。</a>
-      <a href="./private/"><strong>私人版</strong>需要课程密码，包含更完整的本地课程资料。</a>
+      <a href="./private/"><strong>私人版（免密）</strong>保留原安装入口，现在已经取消密码；同样只发布提炼方法，不公开逐字转写。</a>
     </div>
   </main>
 </body>

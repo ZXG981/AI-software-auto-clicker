@@ -18,12 +18,7 @@ let ocrWorker = null;
 let installPrompt = null;
 let updateRegistration = null;
 let pendingUpdateReload = false;
-const APP_VERSION = "2026.10.30.3";
-const APP_MODE = window.location.pathname.includes("/private/") ? "private" : "public";
-
-function decodeBase64(value) {
-  return Uint8Array.from(atob(value), char => char.charCodeAt(0));
-}
+const APP_VERSION = "2026.10.30.4";
 
 async function loadCourseData(fileName = "course-data.json") {
   const response = await fetch(new URL(`./${fileName}`, window.location.href), {
@@ -32,44 +27,6 @@ async function loadCourseData(fileName = "course-data.json") {
   if (!response.ok) throw new Error("无法读取课程方法包");
   COURSE_DATA = await response.json();
   agentNames = COURSE_DATA.agents;
-  renderCourseList();
-}
-
-async function unlockCourseData(passphrase) {
-  const response = await fetch(new URL("./course-data.enc.json", window.location.href), {
-    cache: "no-cache",
-  });
-  if (!response.ok) throw new Error("无法读取私人课程包");
-  const encrypted = await response.json();
-  const keyMaterial = await crypto.subtle.importKey(
-    "raw",
-    new TextEncoder().encode(passphrase),
-    "PBKDF2",
-    false,
-    ["deriveKey"],
-  );
-  const key = await crypto.subtle.deriveKey(
-    {
-      name: "PBKDF2",
-      salt: decodeBase64(encrypted.salt),
-      iterations: encrypted.iterations,
-      hash: "SHA-256",
-    },
-    keyMaterial,
-    { name: "AES-GCM", length: 256 },
-    false,
-    ["decrypt"],
-  );
-  const plaintext = await crypto.subtle.decrypt(
-    { name: "AES-GCM", iv: decodeBase64(encrypted.nonce) },
-    key,
-    decodeBase64(encrypted.ciphertext),
-  );
-  COURSE_DATA = JSON.parse(new TextDecoder().decode(plaintext));
-  agentNames = COURSE_DATA.agents;
-  sessionStorage.setItem("courseDataPassphrase", passphrase);
-  $("#unlockOverlay").hidden = true;
-  $("#unlockError").textContent = "";
   renderCourseList();
 }
 
@@ -272,8 +229,7 @@ ${context}`;
 async function askQuestion(event) {
   event.preventDefault();
   if (!COURSE_DATA) {
-    $("#unlockOverlay").hidden = false;
-    message("请先输入课程资料密码。", "assistant");
+    message("课程方法仍在加载，请稍后再提问。", "assistant");
     return;
   }
   const selectedModel = $("#modelSelect").value;
@@ -385,43 +341,9 @@ $("#photoInput").addEventListener("change", event => {
 window.addEventListener("online", updateNetworkBadge);
 window.addEventListener("offline", updateNetworkBadge);
 
-async function tryUnlock() {
-  const passphrase = $("#coursePassword").value;
-  if (!passphrase) {
-    $("#unlockError").textContent = "请输入课程资料密码。";
-    return;
-  }
-  $("#unlockData").disabled = true;
-  $("#unlockData").textContent = "正在解密…";
-  try {
-    await unlockCourseData(passphrase);
-  } catch (error) {
-    $("#unlockError").textContent = "密码不正确，或课程资料包损坏。";
-  } finally {
-    $("#unlockData").disabled = false;
-    $("#unlockData").textContent = "解锁";
-  }
-}
-
-$("#unlockData").addEventListener("click", tryUnlock);
-$("#coursePassword").addEventListener("keydown", event => {
-  if (event.key === "Enter") tryUnlock();
+loadCourseData("course-data.json").catch(error => {
+  message(`课程方法加载失败：${error.message || error}`);
 });
-
-if (APP_MODE === "private") {
-  $("#unlockOverlay").hidden = false;
-  const rememberedPassphrase = sessionStorage.getItem("courseDataPassphrase");
-  if (rememberedPassphrase) {
-    unlockCourseData(rememberedPassphrase).catch(() => {
-      sessionStorage.removeItem("courseDataPassphrase");
-    });
-  }
-} else {
-  $("#unlockOverlay").hidden = true;
-  loadCourseData("course-data.json").catch(error => {
-    message(`公开课程方法加载失败：${error.message || error}`);
-  });
-}
 
 updateNetworkBadge();
 function showUpdateBanner() {
