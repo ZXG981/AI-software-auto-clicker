@@ -1,4 +1,4 @@
-const CACHE = "offline-study-v8";
+const CACHE = "offline-study-v9";
 const MODEL_COMMITS = {
   "Qwen3-0.6B-q4f16_1-MLC": "8c14ce481d4c692769976ad52afea453a102df19",
   "Qwen3-1.7B-q4f16_1-MLC": "80b3abcec6c3b3f5355dc0cc99cc4fb578f192bc",
@@ -11,6 +11,7 @@ const SHELL = [
   "./assets/app.js",
   "./assets/index.css",
   "./course-data.enc.json",
+  "./course-data.json",
   "./icon-192.png",
   "./icon-512.png",
   "./ocr/worker.min.js",

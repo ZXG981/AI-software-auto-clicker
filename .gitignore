@@ -9,5 +9,6 @@ models/
 work/
 offline-app/node_modules/
 offline-app/dist/
+offline-app/dist-app/
 offline-app/src/course-data.js
 

@@ -4,8 +4,10 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "prepare:data": "node scripts/encrypt_course_data.mjs",
-    "build": "vite build",
+    "prepare:public": "node scripts/build_public_course_data.mjs",
+    "prepare:private": "node scripts/encrypt_course_data.mjs",
+    "prepare:data": "npm run prepare:public && npm run prepare:private",
+    "build": "vite build --outDir dist-app --emptyOutDir && node scripts/make_two_versions.mjs",
     "dev": "vite"
   },
   "dependencies": {

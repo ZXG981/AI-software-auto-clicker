@@ -50,13 +50,16 @@ const ciphertext = await crypto.subtle.encrypt(
   new TextEncoder().encode(JSON.stringify(courseData)),
 );
 const base64 = bytes => Buffer.from(bytes).toString("base64");
-const encrypted = {
-  version: 1,
-  iterations,
-  salt: base64(salt),
-  nonce: base64(nonce),
-  ciphertext: base64(new Uint8Array(ciphertext)),
-};
 const target = join(appRoot, "public", "course-data.enc.json");
-await writeFile(target, JSON.stringify(encrypted), "utf8");
-console.log(`Encrypted ${courseData.sources.length} sources to ${target}`);
+await writeFile(
+  target,
+  JSON.stringify({
+    version: 1,
+    iterations,
+    salt: base64(salt),
+    nonce: base64(nonce),
+    ciphertext: base64(new Uint8Array(ciphertext)),
+  }),
+  "utf8",
+);
+console.log(`Encrypted ${courseData.sources.length} private sources to ${target}`);

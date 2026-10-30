@@ -18,17 +18,28 @@ let ocrWorker = null;
 let installPrompt = null;
 let updateRegistration = null;
 let pendingUpdateReload = false;
-const APP_VERSION = "2026.10.30.2";
+const APP_VERSION = "2026.10.30.3";
+const APP_MODE = window.location.pathname.includes("/private/") ? "private" : "public";
 
 function decodeBase64(value) {
   return Uint8Array.from(atob(value), char => char.charCodeAt(0));
 }
 
-async function decryptCourseData(passphrase) {
+async function loadCourseData(fileName = "course-data.json") {
+  const response = await fetch(new URL(`./${fileName}`, window.location.href), {
+    cache: "no-cache",
+  });
+  if (!response.ok) throw new Error("无法读取课程方法包");
+  COURSE_DATA = await response.json();
+  agentNames = COURSE_DATA.agents;
+  renderCourseList();
+}
+
+async function unlockCourseData(passphrase) {
   const response = await fetch(new URL("./course-data.enc.json", window.location.href), {
     cache: "no-cache",
   });
-  if (!response.ok) throw new Error("无法读取加密课程包");
+  if (!response.ok) throw new Error("无法读取私人课程包");
   const encrypted = await response.json();
   const keyMaterial = await crypto.subtle.importKey(
     "raw",
@@ -54,11 +65,7 @@ async function decryptCourseData(passphrase) {
     key,
     decodeBase64(encrypted.ciphertext),
   );
-  return JSON.parse(new TextDecoder().decode(plaintext));
-}
-
-async function unlockCourseData(passphrase) {
-  COURSE_DATA = await decryptCourseData(passphrase);
+  COURSE_DATA = JSON.parse(new TextDecoder().decode(plaintext));
   agentNames = COURSE_DATA.agents;
   sessionStorage.setItem("courseDataPassphrase", passphrase);
   $("#unlockOverlay").hidden = true;
@@ -401,14 +408,21 @@ $("#coursePassword").addEventListener("keydown", event => {
   if (event.key === "Enter") tryUnlock();
 });
 
-const rememberedPassphrase = sessionStorage.getItem("courseDataPassphrase");
-if (rememberedPassphrase) {
-  unlockCourseData(rememberedPassphrase).catch(() => {
-    sessionStorage.removeItem("courseDataPassphrase");
+if (APP_MODE === "private") {
+  $("#unlockOverlay").hidden = false;
+  const rememberedPassphrase = sessionStorage.getItem("courseDataPassphrase");
+  if (rememberedPassphrase) {
+    unlockCourseData(rememberedPassphrase).catch(() => {
+      sessionStorage.removeItem("courseDataPassphrase");
+    });
+  }
+} else {
+  $("#unlockOverlay").hidden = true;
+  loadCourseData("course-data.json").catch(error => {
+    message(`公开课程方法加载失败：${error.message || error}`);
   });
 }
 
-renderCourseList();
 updateNetworkBadge();
 function showUpdateBanner() {
   $("#updateBanner").hidden = false;
