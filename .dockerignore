@@ -1,0 +1,10 @@
+.venv
+.env
+.env.cloud
+data
+models
+work
+outputs
+.pytest_cache
+__pycache__
+tests

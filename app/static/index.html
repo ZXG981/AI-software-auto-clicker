@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#16697a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="英语学习助手">
+  <title>英语学习助手</title>
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="apple-touch-icon" href="/static/icon-192.png">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<main>
+  <header><p class="eyebrow">PRIVATE ENGLISH STUDIO</p><h1>阅读 · 写作智能体</h1><p>学习课程中可迁移的阅读判断与写作组织方法，不代表或冒充老师本人。新问题会明确标注为「延伸推演」。</p><button id="installApp" class="install-app" hidden>安装到手机</button></header>
+  <section class="grid">
+    <article class="panel import"><h2>导入课程</h2><p>有字幕时优先读取字幕；没有字幕时在本机直接识别音轨。</p>
+      <form id="uploadForm"><label>归属智能体 <select id="importAgent" name="agent"><option value="cet4">四级</option><option value="cet6">六级</option><option value="postgrad">考研</option></select></label><input id="title" name="title" placeholder="课程标题（可选）"><input id="file" name="file" type="file" accept=".txt,.srt,.vtt,.md,.mp3,.mp4,.mpeg,.m4a,.wav,.webm" required><button>导入文件</button></form>
+      <details><summary>粘贴课堂文本</summary><input id="textTitle" placeholder="课程标题"><textarea id="lessonText" placeholder="粘贴字幕、课堂笔记或转写文本…"></textarea><button id="textImport">导入文本</button></details>
+      <details><summary>批量识别公开课程链接</summary><p class="hint">每行一个链接。先读取公开字幕；勾选强制识别时忽略字幕，直接由本机 Whisper 识别音轨。完成后删除媒体，只保留文字笔记。</p><textarea id="sourceUrls" placeholder="https://www.bilibili.com/video/...&#10;https://www.douyin.com/video/...&#10;https://www.xiaohongshu.com/..."></textarea><label class="check"><input id="forceTranscribe" type="checkbox"> 忽略字幕，强制识别音轨</label><button id="queueSource">批量导入并学习</button></details>
+      <p id="importStatus" class="status"></p>
+      <div id="jobs" class="jobs"></div>
+    </article>
+    <article class="panel profile"><h2>教学方法档案</h2><div id="profile">正在加载…</div></article>
+  </section>
+  <section class="panel chat"><div class="chat-head"><h2>开始提问</h2><div><select id="agent"><option value="cet4">四级：阅读与写作</option><option value="cet6">六级：阅读与写作</option><option value="postgrad">考研：阅读与写作</option></select><select id="mode"><option value="auto">自动判断任务</option><option value="reading">阅读理解</option><option value="writing">写作构思</option><option value="correction">作文修改</option><option value="english">尽量全英文</option></select></div></div>
+    <div id="messages" aria-live="polite"><div class="bubble assistant">请选择考试层级，发送阅读题或作文问题。阅读会先锁定原文证据；写作会先搭结构，再处理语言表达。</div></div>
+    <form id="askForm" class="ask"><textarea id="question" placeholder="文字问题可在这里输入；也可以先拍题目照片并识别。"></textarea><div class="photo-row"><label class="photo-button">拍照<input id="cameraInput" type="file" accept="image/*" capture="environment"></label><label class="photo-button secondary-photo">从相册选择<input id="photoInput" type="file" accept="image/*"></label><span id="photoName" class="hint">图片只在本机识别</span><button id="clearPhoto" type="button" class="secondary">移除</button></div><img id="photoPreview" alt="待识别图片预览"><div class="ask-actions"><button id="ocrPhoto" type="button" class="secondary">先识别到输入框</button><button id="askButton">识别并提问</button></div></form>
+  </section>
+  <section class="panel library"><h2>课程库</h2><div id="sources">正在加载…</div></section>
+</main><script src="/static/app.js"></script>
+</body></html>
+

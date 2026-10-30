@@ -1,0 +1,48 @@
+:root{font-family:ui-sans-serif,"Microsoft YaHei",sans-serif;color:#17212b;background:#f4f7f5;font-synthesis:none}
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(135deg,#f9f4e8,#e7f2f1);min-height:100vh}
+main{max-width:780px;margin:auto;padding:28px 14px calc(38px + env(safe-area-inset-bottom))}
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:.14em;color:#16697a}
+h1{font-size:36px;line-height:1.05;margin:8px 0}
+h2{font-size:18px;margin:0 0 12px}
+header p{line-height:1.55}
+.badge{display:inline-block;border-radius:999px;padding:5px 10px;background:#dcece8;color:#16697a;font-size:13px}
+.badge.offline{background:#e5e5e5;color:#555}
+.panel{background:rgba(255,253,247,.95);border:1px solid #d8e1de;border-radius:18px;padding:17px;margin-top:14px;box-shadow:0 10px 30px rgba(23,33,43,.07)}
+label{display:block;font-size:14px;font-weight:700;margin:10px 0}
+select,textarea,input{width:100%;max-width:100%;font:inherit;font-size:16px}
+select,textarea{padding:11px;border:1px solid #cbd1cc;border-radius:10px;background:#fffefa;margin-top:6px}
+textarea{min-height:86px;resize:vertical}
+button,.photo-button{display:inline-flex;align-items:center;justify-content:center;min-height:44px;border:0;border-radius:10px;padding:10px 15px;background:#17212b;color:#fff;font:inherit;font-weight:700;cursor:pointer}
+button:disabled{opacity:.55;cursor:wait}
+.install-offline{width:100%;margin-top:12px;background:#16697a}
+.update-banner{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:10px;padding:10px 12px;border-radius:12px;background:#fff3d8;border:1px solid #e5be69;font-size:14px}
+.update-banner button{min-height:38px;padding:8px 12px;background:#d95d39}
+.version{margin:8px 0 0;font-size:12px;color:#64707b}
+.unlock-overlay{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;background:rgba(244,247,245,.98);padding:20px}
+.unlock-overlay[hidden]{display:none}
+.unlock-card{width:min(420px,100%);padding:24px;border-radius:18px;background:#fffdf7;box-shadow:0 20px 55px rgba(23,33,43,.16)}
+.unlock-card h2{font-size:26px}
+.unlock-card p{line-height:1.55}
+.unlock-card input{width:100%;padding:11px;border:1px solid #cbd1cc;border-radius:10px;font:inherit;font-size:16px;margin:10px 0}
+.unlock-card button{width:100%;margin-top:6px}
+.unlock-error{min-height:20px;color:#91391f;font-size:14px}
+button.secondary,.photo-button.secondary{background:transparent;color:#16697a;border:1px solid #16697a}
+.photo-button input{display:none}
+.chat-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.chat-head select{width:150px;margin:0}
+.messages{max-height:48vh;overflow:auto;margin:10px 0;padding:2px;overscroll-behavior:contain}
+.bubble{white-space:pre-wrap;line-height:1.65;padding:12px;border-radius:13px;margin:8px 0;font-size:15px}
+.assistant{background:#e7f2f1}
+.student{background:#f7e8d8;margin-left:auto;max-width:92%}
+.photo-actions{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+#preview{display:none;max-width:100%;max-height:200px;border-radius:12px;margin:6px 0}
+#preview.visible{display:block}
+#askButton{width:100%;margin-top:8px}
+.progress{height:8px;background:#dce6e2;border-radius:999px;overflow:hidden;margin:12px 0}
+.progress span{display:block;height:100%;width:0;background:#16697a;transition:width .3s}
+.hint{font-size:13px;color:#64707b;line-height:1.5}
+.course{border-top:1px dashed #cbd1cc;padding:10px 0}
+.course:first-child{border-top:0}
+.tag{display:inline-block;padding:3px 8px;border-radius:999px;background:#e7f2f1;color:#16697a;font-size:12px;margin-left:5px}
+@media(max-width:520px){main{padding-top:18px}h1{font-size:32px}.panel{padding:14px}.chat-head{align-items:flex-start}.messages{max-height:44vh}}

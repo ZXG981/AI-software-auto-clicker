@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#16697a">
+  <title>登录 · 英语学习助手</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="login-body">
+  <main class="login-card">
+    <p class="eyebrow">PRIVATE ENGLISH STUDIO</p>
+    <h1>英语学习助手</h1>
+    <p>这是私人学习空间，请输入访问密码。</p>
+    <form method="post" action="/login">
+      <label>用户名<input name="username" value="student" autocomplete="username" required></label>
+      <label>访问密码<input name="password" type="password" autocomplete="current-password" required autofocus></label>
+      <button>进入学习空间</button>
+    </form>
+    <p id="loginError" class="login-error">密码不正确，请重试。</p>
+  </main>
+  <script>
+    if (new URLSearchParams(location.search).has("error")) {
+      document.querySelector("#loginError").classList.add("visible");
+    }
+  </script>
+</body>
+</html>

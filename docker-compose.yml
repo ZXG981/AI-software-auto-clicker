@@ -1,0 +1,35 @@
+services:
+  app:
+    build: .
+    restart: unless-stopped
+    env_file:
+      - .env.cloud
+    environment:
+      DATA_DIR: /data
+      LOCAL_WHISPER_MODEL_DIR: /models
+    volumes:
+      - app_data:/data
+      - whisper_models:/models
+    expose:
+      - "8000"
+
+  caddy:
+    image: caddy:2.10-alpine
+    restart: unless-stopped
+    depends_on:
+      - app
+    env_file:
+      - .env.cloud
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  app_data:
+  whisper_models:
+  caddy_data:
+  caddy_config:

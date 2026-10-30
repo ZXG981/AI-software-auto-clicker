@@ -1,0 +1,13 @@
+.env
+.env.cloud
+.venv/
+data/
+outputs/
+__pycache__/
+.pytest_cache/
+models/
+work/
+offline-app/node_modules/
+offline-app/dist/
+offline-app/src/course-data.js
+
